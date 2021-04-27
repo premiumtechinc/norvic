@@ -18,14 +18,3 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
 }
-
-body {
-  color: $primary;
-  h1,h2,h3,h4,h5,h6 {
-    font-family: $header-font;
-    font-weight: 700;
-  }
-  p {
-    font-family: $body-font;
-  }
-}
