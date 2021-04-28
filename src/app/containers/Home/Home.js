@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { Heading, Text } from '@chakra-ui/react';
+import MessengerChat from 'react-messenger-customer-chat';
 
 import Page from '../../components/Page';
 import Content from '../../components/Content';
@@ -20,6 +21,11 @@ function Home() {
         image="https://source.unsplash.com/collection/404339/800x600"
         text="Get in touch with us"
         link="/contact"
+      />
+
+      <MessengerChat
+        pageId="100754588842352"
+        appId="475139486939056"
       />
     </Page>
   );
