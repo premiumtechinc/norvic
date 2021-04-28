@@ -1,6 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Flex, Text, Button, Image, Heading } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Text,
+  Button,
+  Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem as Item,
+  Drawer,
+  DrawerBody,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionIcon,
+  AccordionPanel,
+} from '@chakra-ui/react';
+import { EmailIcon, ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons';
 
 import logo from '../../../images/logo.png';
 
@@ -29,31 +51,33 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
   );
 };
 
-const CloseIcon = () => (
-  <svg width="24" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-    <title>Close</title>
-    <path
-      fill="green"
-      d="M9.00023 7.58599L13.9502 2.63599L15.3642 4.04999L10.4142 8.99999L15.3642 13.95L13.9502 15.364L9.00023 10.414L4.05023 15.364L2.63623 13.95L7.58623 8.99999L2.63623 4.04999L4.05023 2.63599L9.00023 7.58599Z"
-    />
-  </svg>
-);
-
-const MenuIcon = () => (
-  <svg
-    width="24px"
-    viewBox="0 0 20 20"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="green"
-  >
-    <title>Menu</title>
-    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-  </svg>
-);
+const DrawerMenuItem = ({ children, isLast, to = "/", ...rest }) => {
+  return (
+    <Box
+      pt="4"
+      pb="4"
+      pl="4"
+      flex="1"
+      w="100%"
+      borderBottom="1px"
+      borderColor="gray.200"
+      justifyContent="center"
+      textAlign="left"
+    >
+      <Text
+        mb={{ base: isLast ? 0 : 8, sm: 0 }}
+        display="block"
+        {...rest}
+      >
+        <Link to={to}>{children}</Link>
+      </Text>
+    </Box>
+  );
+};
 
 const Header = (props) => {
-  const [show, setShow] = React.useState(false);
-  const toggleMenu = () => setShow(!show);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef();
 
   return (
     <Flex
@@ -64,8 +88,6 @@ const Header = (props) => {
       w="100%"
       mb={8}
       p={8}
-      // bg={["primary.500", "primary.500", "transparent", "transparent"]}
-      // color={["white", "white", "primary.500", "primary.500"]}
       bg={["transparent", "transparent", "transparent", "transparent"]}
       color={["primary.500", "primary.500", "primary.500", "primary.500"]}
       borderBottom="1px"
@@ -76,12 +98,79 @@ const Header = (props) => {
         <Logo w="120px" />
       </Flex>
 
-      <Box display={{ base: "block", md: "none" }} onClick={toggleMenu}>
-        {show ? <CloseIcon /> : <MenuIcon />}
+      <Box display={{ base: "block", md: "none" }} onClick={onOpen}>
+        <HamburgerIcon w={8} h={8} />
       </Box>
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay>
+          <DrawerContent>
+            <DrawerCloseButton />
+
+            <DrawerBody p="0">
+              <Box
+                flexBasis="100%"
+                mt="20"
+              >
+                <Flex
+                  align="flex-start"
+                  justify="center"
+                  direction="column"
+                  pt="4"
+                >
+                  <Accordion w="100%" allowMultiple>
+                    <AccordionItem>
+                      <AccordionButton p="4" _focus={{ boxShadow: "0" }} _hover={{ bg: "transparent" }}>
+                        <Box textAlign="left">
+                          <Text mr="4" fontWeight="600" fontSize="2xl">SERVICES</Text>
+                        </Box>
+                        <AccordionIcon w={8} h={8} />
+                      </AccordionButton>
+                      <AccordionPanel pb={4}>
+                        <Flex direction="column">
+                          <MenuItem to="">Test 1</MenuItem>
+                          <MenuItem to="">Test 2</MenuItem>
+                          <MenuItem to="">Test 3</MenuItem>
+                          <MenuItem to="">Test 4</MenuItem>
+                        </Flex>
+                      </AccordionPanel>
+                    </AccordionItem>
+                  </Accordion>
+
+                  <DrawerMenuItem mr="4" fontWeight="600" fontSize="2xl" to="/products">
+                    PRODUCTS
+                  </DrawerMenuItem>
+                  <DrawerMenuItem mr="4" fontWeight="600" fontSize="2xl" to="/products">
+                    ABOUT US
+                  </DrawerMenuItem>
+
+                  <Button
+                    size="lg"
+                    rounded="md"
+                    color={["white", "white", "white", "white"]}
+                    bg={["primary.500", "primary.500", "primary.500", "primary.500"]}
+                    _hover={{
+                      bg: ["secondary.500", "secondary.500", "secondary.500", "secondary.500"],
+                    }}
+                    leftIcon={<EmailIcon />}
+                    m="auto"
+                    mt="16"
+                  >
+                    CONTACT US
+                  </Button>
+                </Flex>
+              </Box>
+            </DrawerBody>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
 
       <Box
-        display={{ base: show ? "block" : "none", md: "block" }}
+        display={{ base: "none", md: "block" }}
         flexBasis={{ base: "100%", md: "auto" }}
       >
         <Flex
@@ -90,26 +179,42 @@ const Header = (props) => {
           direction={["column", "row", "row", "row"]}
           pt={[4, 4, 0, 0]}
         >
-          <MenuItem to="/services">
-            <Heading size="sm">SERVICES</Heading>
+          <MenuItem>
+            <Menu>
+              <MenuButton
+                variant="outline"
+                borderRadius="8px"
+                py="4"
+                px="4"
+                lineHeight="1"
+                size="md"
+              >
+                SERVICES <ChevronDownIcon />
+              </MenuButton>
+              <MenuList>
+                <Item><MenuItem to="">Test 1</MenuItem></Item>
+                <Item><MenuItem to="">Test 2</MenuItem></Item>
+                <Item><MenuItem to="">Test 3</MenuItem></Item>
+                <Item><MenuItem to="">Test 4</MenuItem></Item>
+              </MenuList>
+            </Menu>
           </MenuItem>
           <MenuItem to="/products">
-            <Heading size="sm">PRODUCTS</Heading>
+            PRODUCTS
           </MenuItem>
           <MenuItem to="/about">
-            <Heading size="sm">ABOUT US</Heading>
+            ABOUT US
           </MenuItem>
           <MenuItem to="/contact" isLast>
             <Button
               size="sm"
               rounded="md"
-              // color={["primary.500", "primary.500", "white", "white"]}
-              // bg={["white", "white", "primary.500", "primary.500"]}
               color={["white", "white", "white", "white"]}
               bg={["primary.500", "primary.500", "primary.500", "primary.500"]}
               _hover={{
                 bg: ["secondary.500", "secondary.500", "secondary.500", "secondary.500"],
               }}
+              leftIcon={<EmailIcon />}
             >
               CONTACT US
             </Button>

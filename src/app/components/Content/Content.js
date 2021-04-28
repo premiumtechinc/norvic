@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import {
   Box,
   Button,
@@ -9,7 +9,9 @@ import {
   Heading,
   Stack,
   Text,
-} from "@chakra-ui/react";
+  Arrow
+} from '@chakra-ui/react';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 
 
 const Content = ({
@@ -67,8 +69,11 @@ const Content = ({
             lineHeight="1"
             size="md"
             _hover={{
-              bg: "secondary.500"
+              bg: "secondary.500",
+              color: "white",
             }}
+            variant="outline"
+            rightIcon={<ChevronRightIcon />} 
           >
             {text}
           </Button>
