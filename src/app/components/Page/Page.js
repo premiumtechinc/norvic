@@ -2,7 +2,7 @@ import React from 'react';
 import { Flex } from '@chakra-ui/react';
 
 import Header from '../Header';
-// import Footer from './sections/Footer';
+import Footer from '../Footer';
 
 
 const Page = (props) => {
@@ -14,7 +14,7 @@ const Page = (props) => {
     >
       <Header />
       {props.children}
-      {/* <Footer /> */}
+      <Footer />
     </Flex>
   );
 }

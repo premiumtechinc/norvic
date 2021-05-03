@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -21,19 +21,26 @@ import {
   AccordionItem,
   AccordionIcon,
   AccordionPanel,
+  Skeleton,
 } from '@chakra-ui/react';
 import { EmailIcon, ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons';
 
 import logo from '../../../images/logo.png';
 
 const Logo = (props) => {
+  const [isLoading, setLoading] = useState(true);
   return (
     <Box {...props}>
-      <Image
-        src={logo}
-        objectFit="cover"
-        alt="Norvic Drugs Corp"
-      />
+      <Link to="/home">
+        <Skeleton isLoaded={!isLoading}>
+          <Image
+            src={logo}
+            objectFit="cover"
+            alt="Norvic Drugs Corp"
+            onLoad={() => setLoading(false)}
+          />
+        </Skeleton>
+      </Link>
     </Box>
   );
 }
@@ -86,8 +93,8 @@ const Header = (props) => {
       justify="space-between"
       wrap="wrap"
       w="100%"
-      mb={8}
-      p={8}
+      mb={4}
+      p={6}
       bg={["transparent", "transparent", "transparent", "transparent"]}
       color={["primary.500", "primary.500", "primary.500", "primary.500"]}
       borderBottom="1px"

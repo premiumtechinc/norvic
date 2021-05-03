@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -9,7 +9,8 @@ import {
   Heading,
   Stack,
   Text,
-  Arrow
+  Arrow,
+  Skeleton,
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 
@@ -22,6 +23,8 @@ const Content = ({
   text,
   ...rest
 }) => {
+  const [isLoading, setLoading] = useState(true);
+
   return (
     <Flex
       align="center"
@@ -80,8 +83,15 @@ const Content = ({
         </Link>
       </Stack>
       <Box w={{ base: "80%", sm: "60%", md: "50%" }} mb={{ base: 12, md: 0 }}>
-        {/* TODO: Make this change every X secs */}
-        <Image src={image} size="100%" rounded="1rem" shadow="2xl" />
+        <Skeleton isLoaded={!isLoading}>
+          <Image
+            src={image}
+            size="100%"
+            // rounded="1rem"
+            // shadow="2xl"
+            onLoad={() => setLoading(false)}
+          />
+        </Skeleton>
       </Box>
     </Flex>
   );
