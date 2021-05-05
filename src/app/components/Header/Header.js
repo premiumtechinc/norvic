@@ -26,15 +26,16 @@ import {
 import { EmailIcon, ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons';
 
 import logo from '../../../images/logo.png';
+import logoFull from '../../../images/logo-full.png';
 
-const Logo = (props) => {
+const Logo = ({ displayFull, ...props }) => {
   const [isLoading, setLoading] = useState(true);
   return (
     <Box {...props}>
       <Link to="/home">
         <Skeleton isLoaded={!isLoading}>
           <Image
-            src={logo}
+            src={displayFull ? logoFull : logo}
             objectFit="cover"
             alt="Norvic Drugs Corp"
             onLoad={() => setLoading(false)}
@@ -102,7 +103,8 @@ const Header = (props) => {
       {...props}
     >
       <Flex align="center">
-        <Logo w="120px" />
+        <Logo displayFull display={{ base: "none", md: "block" }} w="320px" />
+        <Logo display={{ base: "block", md: "none" }} w="120px" />
       </Flex>
 
       <Box display={{ base: "block", md: "none" }} onClick={onOpen}>
@@ -186,26 +188,22 @@ const Header = (props) => {
           direction={["column", "row", "row", "row"]}
           pt={[4, 4, 0, 0]}
         >
-          <MenuItem>
-            <Menu>
-              <MenuButton
-                variant="outline"
-                borderRadius="8px"
-                py="4"
-                px="4"
-                lineHeight="1"
-                size="md"
-              >
-                SERVICES <ChevronDownIcon />
-              </MenuButton>
-              <MenuList>
-                <Item><MenuItem to="">Test 1</MenuItem></Item>
-                <Item><MenuItem to="">Test 2</MenuItem></Item>
-                <Item><MenuItem to="">Test 3</MenuItem></Item>
-                <Item><MenuItem to="">Test 4</MenuItem></Item>
-              </MenuList>
-            </Menu>
-          </MenuItem>
+          <Menu>
+            <MenuButton
+              py="4"
+              px="8"
+              lineHeight="1"
+              size="md"
+            >
+              SERVICES <ChevronDownIcon />
+            </MenuButton>
+            <MenuList>
+              <Item><MenuItem to="/home">Test 1</MenuItem></Item>
+              <Item><MenuItem to="/home">Test 2</MenuItem></Item>
+              <Item><MenuItem to="/home">Test 3</MenuItem></Item>
+              <Item><MenuItem to="/home">Test 4</MenuItem></Item>
+            </MenuList>
+          </Menu>
           <MenuItem to="/products">
             PRODUCTS
           </MenuItem>
